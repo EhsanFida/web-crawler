@@ -8,7 +8,20 @@ type Beneficiary {
     contactPhoneNumber:String
     isActive:Boolean
 }
+input BeneficiaryInput{
+         id:ID!
+         firstName:String
+         middleName:String
+         lastName:String
+         nationality:String
+         contactPhoneType:String
+         contactPhoneNumber:String
+         isActive:Boolean
 
+}
+type Mutation{
+    createBeneficiary(beneficiary:BeneficiaryInput):Beneficiary
+}
 type Query {
     allBeneficiaries:[Beneficiary]
     getBeneficiary(id:Int):Beneficiary
