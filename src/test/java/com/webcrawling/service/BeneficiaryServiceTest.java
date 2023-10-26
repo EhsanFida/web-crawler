@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
-public class TestBeneficiaryService {
+public class BeneficiaryServiceTest {
     @Autowired
     BeneficiaryService beneficiaryService;
 
