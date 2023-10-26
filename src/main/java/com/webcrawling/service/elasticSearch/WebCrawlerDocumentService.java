@@ -3,6 +3,7 @@ package com.webcrawling.service.elasticSearch;
 
 import com.webcrawling.entities.elasticSearch.WebCrawlerDocument;
 import com.webcrawling.repositories.elasticSearch.WebCrawlerDocumentRepository;
+import com.webcrawling.service.webCrawler.WebCrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class WebCrawlerDocumentService {
 
     @Autowired
     public WebCrawlerDocumentRepository webCrawlerDocumentRepository;
+    @Autowired
+    public WebCrawlerService webCrawlerService;
 
     public void saveWebCralwerDocument(WebCrawlerDocument webCrawlerDocument) {
         webCrawlerDocumentRepository.save(webCrawlerDocument);
@@ -27,5 +30,9 @@ public class WebCrawlerDocumentService {
 
     public void deleteWebCrawlerDocument(String id) {
         webCrawlerDocumentRepository.deleteById(id);
+    }
+
+    public void search(String url) {
+        webCrawlerService.crawlWebsite(url);
     }
 }

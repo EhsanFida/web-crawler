@@ -1,8 +1,7 @@
 package com.webcrawling;
 
-import com.webcrawling.entities.Beneficiary;
-import com.webcrawling.repositories.BeneficiaryRepository;
-import com.webcrawling.service.BeneficiaryService;
+import com.webcrawling.entities.beneficiary.Beneficiary;
+import com.webcrawling.service.beneficiary.BeneficiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

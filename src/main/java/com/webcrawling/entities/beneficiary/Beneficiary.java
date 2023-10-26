@@ -1,4 +1,4 @@
-package com.webcrawling.entities;
+package com.webcrawling.entities.beneficiary;
 
 import lombok.*;
 

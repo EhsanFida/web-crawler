@@ -1,7 +1,8 @@
 package com.webcrawling.service;
 
-import com.webcrawling.entities.Beneficiary;
-import com.webcrawling.repositories.BeneficiaryRepository;
+import com.webcrawling.entities.beneficiary.Beneficiary;
+import com.webcrawling.repositories.beneficiary.BeneficiaryRepository;
+import com.webcrawling.service.beneficiary.BeneficiaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

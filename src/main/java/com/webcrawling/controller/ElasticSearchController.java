@@ -14,9 +14,9 @@ public class ElasticSearchController {
     @Autowired
     public WebCrawlerDocumentService webCrawlerDocumentService;
 
-    @GetMapping("/pathVariable/{url}")
-    public String handlePathVariable(@PathVariable String url) {
-
+    @GetMapping("/crawl")
+    public String processWebCrawling(@RequestParam String url) {
+        webCrawlerDocumentService.search(url);
         return "Received string value: " + url;
     }
 

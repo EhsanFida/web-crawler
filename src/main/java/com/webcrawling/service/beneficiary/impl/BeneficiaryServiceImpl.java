@@ -1,8 +1,8 @@
-package com.webcrawling.service.impl;
+package com.webcrawling.service.beneficiary.impl;
 
-import com.webcrawling.entities.Beneficiary;
-import com.webcrawling.repositories.BeneficiaryRepository;
-import com.webcrawling.service.BeneficiaryService;
+import com.webcrawling.entities.beneficiary.Beneficiary;
+import com.webcrawling.repositories.beneficiary.BeneficiaryRepository;
+import com.webcrawling.service.beneficiary.BeneficiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

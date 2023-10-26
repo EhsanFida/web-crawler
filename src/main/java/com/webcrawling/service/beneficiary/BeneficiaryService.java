@@ -1,6 +1,6 @@
-package com.webcrawling.service;
+package com.webcrawling.service.beneficiary;
 
-import com.webcrawling.entities.Beneficiary;
+import com.webcrawling.entities.beneficiary.Beneficiary;
 
 import java.util.List;
 
