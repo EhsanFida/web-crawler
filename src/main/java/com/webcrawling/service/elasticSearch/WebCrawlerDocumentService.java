@@ -7,7 +7,7 @@ import com.webcrawling.service.webCrawler.WebCrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,7 +19,7 @@ public class WebCrawlerDocumentService {
     @Autowired
     public WebCrawlerService webCrawlerService;
 
-    public void saveWebCralwerDocument(WebCrawlerDocument webCrawlerDocument) {
+    public void saveWebCrawlerDocument(WebCrawlerDocument webCrawlerDocument) {
         webCrawlerDocumentRepository.save(webCrawlerDocument);
     }
 
@@ -32,7 +32,9 @@ public class WebCrawlerDocumentService {
         webCrawlerDocumentRepository.deleteById(id);
     }
 
-    public void search(String url) {
-        webCrawlerService.crawlWebsite(url);
+    public void search(String url, int maxDepth, int maxDocuments) {
+        webCrawlerService.crawlWebsite(url, maxDepth, maxDocuments);
     }
+
+
 }

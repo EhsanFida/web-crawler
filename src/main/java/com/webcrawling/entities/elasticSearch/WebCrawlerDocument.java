@@ -11,10 +11,12 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Getter
 @Setter
 @NoArgsConstructor
-@Document(indexName = "web_crawler_documet")
+@Document(indexName = "web_crawler_document")
 public class WebCrawlerDocument {
     @Id
     private String id;
     private String title;
     private String description;
+    private String url;
+    private String content;
 }

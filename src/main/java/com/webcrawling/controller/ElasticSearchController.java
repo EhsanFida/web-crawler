@@ -15,14 +15,14 @@ public class ElasticSearchController {
     public WebCrawlerDocumentService webCrawlerDocumentService;
 
     @GetMapping("/crawl")
-    public String processWebCrawling(@RequestParam String url) {
-        webCrawlerDocumentService.search(url);
+    public <Int> String processWebCrawling(@RequestParam String url, @RequestParam int maxDepth, @RequestParam int urlCrawled) {
+        webCrawlerDocumentService.search(url,maxDepth,urlCrawled);
         return "Received string value: " + url;
     }
 
     @PostMapping("/saveData")
     public ResponseEntity<String> saveData(@RequestBody WebCrawlerDocument webCrawlerDocument) {
-        webCrawlerDocumentService.saveWebCralwerDocument(webCrawlerDocument);
+        webCrawlerDocumentService.saveWebCrawlerDocument(webCrawlerDocument);
         return ResponseEntity.ok("Saved successfully");
     }
 
