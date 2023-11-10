@@ -18,7 +18,7 @@ import javax.persistence.GenerationType;
 public class WebPage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String url;
     private String title;
     private String content;

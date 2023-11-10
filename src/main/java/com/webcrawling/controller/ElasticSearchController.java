@@ -1,7 +1,7 @@
 package com.webcrawling.controller;
-
-import com.webcrawling.entities.elasticSearch.WebCrawlerDocument;
-import com.webcrawling.service.elasticSearch.WebCrawlerDocumentService;
+import com.webcrawling.entities.webCrawler.WebPage;
+import com.webcrawling.repositories.webCrawler.WebPageRepository;
+import com.webcrawling.service.webCrawler.WebCrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,28 +12,20 @@ import java.util.List;
 @RequestMapping("/elasticSearch")
 public class ElasticSearchController {
     @Autowired
-    public WebCrawlerDocumentService webCrawlerDocumentService;
+    public WebCrawlerService webCrawlerService;
 
     @GetMapping("/crawl")
     public <Int> String processWebCrawling(@RequestParam String url, @RequestParam int maxDepth, @RequestParam int urlCrawled) {
-        webCrawlerDocumentService.search(url,maxDepth,urlCrawled);
+        webCrawlerService.crawlWebsite(url,maxDepth,urlCrawled);
         return "Received string value: " + url;
     }
-
-    @PostMapping("/saveData")
-    public ResponseEntity<String> saveData(@RequestBody WebCrawlerDocument webCrawlerDocument) {
-        webCrawlerDocumentService.saveWebCrawlerDocument(webCrawlerDocument);
-        return ResponseEntity.ok("Saved successfully");
+        @GetMapping
+    public List<WebPage> getWebCrawlerDocument() {
+        return webCrawlerService.getWebCrawlerDocuments();
+    }
+    @GetMapping("/search")
+    public List<WebPage> getWebCrawlerDocument(@RequestParam String filter) {
+        return webCrawlerService.getWebCrawlerDocumentBySearchParam(filter);
     }
 
-    @GetMapping
-    public List<WebCrawlerDocument> getWebCrawlerDocument() {
-        return webCrawlerDocumentService.getWebCrawlerDocuments();
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deletedWebCrawlerDocument(@PathVariable String id) {
-        webCrawlerDocumentService.deleteWebCrawlerDocument(id);
-        return ResponseEntity.ok("Deleted successfully");
-    }
 }

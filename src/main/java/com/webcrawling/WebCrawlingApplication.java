@@ -1,23 +1,16 @@
 package com.webcrawling;
-
-import com.webcrawling.entities.beneficiary.Beneficiary;
-import com.webcrawling.service.beneficiary.BeneficiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebCrawlingApplication implements CommandLineRunner {
-
-	@Autowired
-	private BeneficiaryService beneficiaryService;
-
+public class WebCrawlingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WebCrawlingApplication.class, args);
 	}
 
-	@Override
+	/*@Override
 	public void run(String... args) throws Exception {
 		Beneficiary bene1 = new Beneficiary();
 		bene1.setFirstName("Ehsan");
@@ -45,5 +38,5 @@ public class WebCrawlingApplication implements CommandLineRunner {
 		bene3.setContactPhoneNumber("03348979074");
 		bene3.setIsActive(true);
 		beneficiaryService.createBeneficiary(bene3);
-	}
+	}*/
 }
