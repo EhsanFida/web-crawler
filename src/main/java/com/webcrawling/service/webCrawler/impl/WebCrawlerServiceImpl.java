@@ -46,15 +46,7 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
                     WebPage webPage = new WebPage();
                     webPage.setUrl(currentUrl);
                     webPage.setTitle(document.title());
-                    // Counting words and limiting to 200
-                    String content = document.text();
-                    String[] words = content.split("\\s+");
-                    int wordCount = words.length;
-
-                    if (wordCount > 200) {
-                        // Truncate the content to 200 words
-                        content = String.join(" ", Arrays.copyOfRange(words, 0, 200));
-                    }
+                    webPage.setDescription(document.text().substring(0,200));
                     webPage.setContent(document.text());
                     webPageRepository.save(webPage);
                     documentsCrawled++;
