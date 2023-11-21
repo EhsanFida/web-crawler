@@ -2,6 +2,8 @@ package com.webcrawling.controller;
 import com.webcrawling.entities.webCrawler.WebPage;
 import com.webcrawling.repositories.webCrawler.WebPageRepository;
 import com.webcrawling.service.webCrawler.WebCrawlerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/elasticSearch")
+@Api(tags = "Web Crawler API", description = "Operations for web crawling over specified URLs")
 public class ElasticSearchController {
     @Autowired
     public WebCrawlerService webCrawlerService;

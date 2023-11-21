@@ -1,19 +1,18 @@
-package com.webcrawling.config;
+package com.webcrawling.service.webCrawler;
 
 import com.webcrawling.service.webCrawler.impl.WebCrawlerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 @Configuration
-@EnableScheduling
-public class SchedulingConfig {
+@Service
+public class SchedulerService {
     @Autowired
     WebCrawlerServiceImpl webCrawlerService;
-    @Scheduled(fixedRate = 600000)  // Run after every 6 Minutes
+    @Scheduled(fixedRate = 500000)  // Run after every Five(5) Minutes
     public void scheduledCrawl() {
-                webCrawlerService.crawlWebsite("https://www.tutorialspoint.com/", 10, 10);
+        webCrawlerService.crawlWebsite("https://www.tutorialspoint.com/", 10, 10);
     }
-
 }
