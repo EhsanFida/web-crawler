@@ -32,7 +32,6 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
     WebPageRepository webPageRepository;
     @Autowired
     private ExceptionRecordRepository exceptionRecordRepository;
-    @Async
     public void  crawlWebsite(String startingUrl, int maxDepth, int maxDocuments) {
        logger.info("Web Crawling over given URL has been started");
        logger.info(Thread.currentThread().getName());
@@ -49,7 +48,7 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
                     WebPage webPage = new WebPage();
                     webPage.setUrl(currentUrl);
                     webPage.setTitle(document.title());
-                    webPage.setDescription(document.text().substring(0,200));
+                    webPage.setDescription(document.text().length()>200?document.text().substring(0,200):document.text());
                     webPage.setContent(document.text());
                     webPageRepository.save(webPage);
                     documentsCrawled++;
