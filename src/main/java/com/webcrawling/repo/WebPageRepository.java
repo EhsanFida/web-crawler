@@ -1,6 +1,6 @@
-package com.webcrawling.repositories.webCrawler;
+package com.webcrawling.repo;
 
-import com.webcrawling.entities.webCrawler.WebPage;
+import com.webcrawling.entity.WebPage;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 

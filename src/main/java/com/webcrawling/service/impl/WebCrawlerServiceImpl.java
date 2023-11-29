@@ -1,20 +1,16 @@
-package com.webcrawling.service.webCrawler.impl;
-import com.webcrawling.entities.webCrawler.ExceptionRecord;
-import com.webcrawling.entities.webCrawler.WebPage;
-import com.webcrawling.repositories.webCrawler.ExceptionRecordRepository;
-import com.webcrawling.repositories.webCrawler.WebPageRepository;
-import com.webcrawling.service.webCrawler.WebCrawlerService;
+package com.webcrawling.service.impl;
+
+import com.webcrawling.entity.ExceptionRecord;
+import com.webcrawling.entity.WebPage;
+import com.webcrawling.repo.ExceptionRecordRepository;
+import com.webcrawling.repo.WebPageRepository;
+import com.webcrawling.service.WebCrawlerService;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,15 +22,14 @@ import java.util.stream.StreamSupport;
 @Service
 @Slf4j
 public class WebCrawlerServiceImpl implements WebCrawlerService {
-    private static final Logger logger= LoggerFactory.getLogger(WebCrawlerServiceImpl.class);
-    ExceptionRecord exceptionRecord = new ExceptionRecord();
     @Autowired
     WebPageRepository webPageRepository;
     @Autowired
     private ExceptionRecordRepository exceptionRecordRepository;
-    public void  crawlWebsite(String startingUrl, int maxDepth, int maxDocuments) {
-       logger.info("Web Crawling over given URL has been started");
-       logger.info(Thread.currentThread().getName());
+
+    public void crawlWebsite(String startingUrl, int maxDepth, int maxDocuments) {
+        log.info("Web Crawling over given URL has been started {} ", startingUrl);
+        log.info(Thread.currentThread().getName());
         Queue<String> urlQueue = new LinkedList<>();
         Set<String> visitedUrls = new HashSet<>();
         urlQueue.add(startingUrl);
@@ -45,12 +40,12 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
             if (!visitedUrls.contains(currentUrl)) {
                 try {
                     Document document = Jsoup.connect(currentUrl).get();
-                    WebPage webPage = new WebPage();
-                    webPage.setUrl(currentUrl);
-                    webPage.setTitle(document.title());
-                    webPage.setDescription(document.text().length()>200?document.text().substring(0,200):document.text());
-                    webPage.setContent(document.text());
-                    webPageRepository.save(webPage);
+                    webPageRepository.save(WebPage.builder()
+                            .url(currentUrl)
+                            .title(document.title())
+                            .description(document.text().length() > 200 ? document.text().substring(0, 200) : document.text())
+                            .content(document.text())
+                            .build());
                     documentsCrawled++;
 
                     Elements links = document.select("a[href]");
@@ -59,11 +54,11 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
                         urlQueue.add(linkUrl);
                     }
                 } catch (IOException e) {
-                      logger.error("An error occurred while crawling URL: " + currentUrl, e);
-                      saveExceptionRecord(e);
+                    log.error("An error occurred while crawling URL : {} {} ", currentUrl, e);
+                    saveExceptionRecord(e, "crawlWebsite");
                 }
                 visitedUrls.add(currentUrl);
-                logger.info("Web Crawling Completed on " +currentUrl);
+                log.info("Web Crawling Completed on {} ", currentUrl);
             }
             if (urlQueue.isEmpty()) {
                 currentDepth++;
@@ -72,12 +67,12 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
 
     }
 
-    public void saveExceptionRecord(IOException e) {
-        exceptionRecord.setMethodName("crawlWebsite");
-        exceptionRecord.setExceptionMessage(e.getMessage());
-        exceptionRecord.setTimestamp(LocalDateTime.now());
-
-        exceptionRecordRepository.save(exceptionRecord);
+    public void saveExceptionRecord(IOException e, final String methodName) {
+        log.info("Logging error into elastic");
+        exceptionRecordRepository.save(ExceptionRecord.builder().methodName(methodName)
+                .exceptionMessage(e.toString())
+                .timestamp(LocalDateTime.now())
+                .build());
     }
 
     public List<WebPage> getWebCrawlerDocumentBySearchParam(String filter) {

@@ -1,39 +1,34 @@
 package com.webcrawling.controller;
 
-import com.webcrawling.entities.elasticSearch.WebCrawlerDocument;
-import com.webcrawling.service.elasticSearch.WebCrawlerDocumentService;
+import com.webcrawling.entity.WebPage;
+import com.webcrawling.service.WebCrawlerService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/elasticSearch")
+@Api(tags = "Web Crawler API", description = "Operations for web crawling over specified URLs")
 public class ElasticSearchController {
     @Autowired
-    public WebCrawlerDocumentService webCrawlerDocumentService;
+    public WebCrawlerService webCrawlerService;
 
     @GetMapping("/crawl")
     public <Int> String processWebCrawling(@RequestParam String url, @RequestParam int maxDepth, @RequestParam int urlCrawled) {
-        webCrawlerDocumentService.search(url,maxDepth,urlCrawled);
+        webCrawlerService.crawlWebsite(url, maxDepth, urlCrawled);
         return "Received string value: " + url;
     }
 
-    @PostMapping("/saveData")
-    public ResponseEntity<String> saveData(@RequestBody WebCrawlerDocument webCrawlerDocument) {
-        webCrawlerDocumentService.saveWebCrawlerDocument(webCrawlerDocument);
-        return ResponseEntity.ok("Saved successfully");
-    }
-
     @GetMapping
-    public List<WebCrawlerDocument> getWebCrawlerDocument() {
-        return webCrawlerDocumentService.getWebCrawlerDocuments();
+    public List<WebPage> getWebCrawlerDocument() {
+        return webCrawlerService.getWebCrawlerDocuments();
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deletedWebCrawlerDocument(@PathVariable String id) {
-        webCrawlerDocumentService.deleteWebCrawlerDocument(id);
-        return ResponseEntity.ok("Deleted successfully");
+    @GetMapping("/search")
+    public List<WebPage> getWebCrawlerDocument(@RequestParam String filter) {
+        return webCrawlerService.getWebCrawlerDocumentBySearchParam(filter);
     }
+
 }

@@ -1,6 +1,6 @@
-package com.webcrawling.service.webCrawler;
+package com.webcrawling.service;
 
-import com.webcrawling.entities.webCrawler.WebPage;
+import com.webcrawling.entity.WebPage;
 
 import java.util.List;
 
