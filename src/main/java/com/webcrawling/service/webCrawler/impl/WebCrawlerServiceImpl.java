@@ -1,12 +1,10 @@
 package com.webcrawling.service.webCrawler.impl;
-import com.webcrawling.entities.webCrawler.ExceptionRecord;
-import com.webcrawling.entities.webCrawler.WebPage;
-import com.webcrawling.repositories.webCrawler.ExceptionRecordRepository;
-import com.webcrawling.repositories.webCrawler.WebPageRepository;
+import com.webcrawling.entities.ExceptionRecord;
+import com.webcrawling.entities.WebPage;
+import com.webcrawling.repositories.ExceptionRecordRepository;
+import com.webcrawling.repositories.WebPageRepository;
 import com.webcrawling.service.webCrawler.WebCrawlerService;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,7 +12,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
