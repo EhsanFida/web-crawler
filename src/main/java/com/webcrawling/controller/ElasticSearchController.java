@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,7 +38,7 @@ public class ElasticSearchController {
     }
 
     @GetMapping("/failureDetails")
-    public List<ExceptionRecord> getFailing() {
+    public List<ExceptionRecord> getFailing() throws IOException {
         return exceptionLoggingService.getFailedSites();
     }
 

@@ -23,24 +23,30 @@ public class SchedulerService {
     WebCrawlerServiceImpl webCrawlerService;
     @Value("${urls}")
     private String url;
+
+    @Value("${enable.scheduling}")
+    private boolean enableScheduling;
     private List<String> urls;
 
     @PostConstruct
     public void init() {
         urls = new ArrayList<>();
         urls.addAll(Arrays.stream(url.split(",")).toList());
+        log.info("Scheduling enabled : {} ", enableScheduling);
     }
 
     // Run after every Five(5) Minutes
     @Scheduled(fixedRate = 500000)
     public void scheduledCrawl() throws InterruptedException {
-        final ExecutorService executorService = Executors.newFixedThreadPool(10);
-        List<Callable<String>> callables = new ArrayList<>();
-        urls.forEach(val -> {
-            callables.add(new ServiceProcessors(val, webCrawlerService));
-        });
-        executorService.invokeAll(callables);
-        executorService.shutdown();
+        if (enableScheduling) {
+            final ExecutorService executorService = Executors.newFixedThreadPool(10);
+            List<Callable<String>> callables = new ArrayList<>();
+            urls.forEach(val -> {
+                callables.add(new ServiceProcessors(val, webCrawlerService));
+            });
+            executorService.invokeAll(callables);
+            executorService.shutdown();
+        }
     }
 
 }

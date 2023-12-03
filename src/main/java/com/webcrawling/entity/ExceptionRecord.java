@@ -1,4 +1,5 @@
 package com.webcrawling.entity;
+
 import com.webcrawling.entity.deserializer.CustomZonedDateTimeConverter;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -27,7 +28,7 @@ public class ExceptionRecord {
     @Field
     private String exceptionMessage;
 
-    @Field(type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSS")
+    @Field
     @ValueConverter(CustomZonedDateTimeConverter.class)
     private LocalDateTime timestamp;
 }
