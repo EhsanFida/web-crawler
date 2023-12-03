@@ -1,6 +1,8 @@
 package com.webcrawling.controller;
 
+import com.webcrawling.entity.ExceptionRecord;
 import com.webcrawling.entity.WebPage;
+import com.webcrawling.service.ExceptionLoggingService;
 import com.webcrawling.service.WebCrawlerService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,10 @@ import java.util.List;
 @Api(tags = "Web Crawler API", description = "Operations for web crawling over specified URLs")
 public class ElasticSearchController {
     @Autowired
-    public WebCrawlerService webCrawlerService;
+    private WebCrawlerService webCrawlerService;
+
+    @Autowired
+    private ExceptionLoggingService exceptionLoggingService;
 
     @GetMapping("/crawl")
     public <Int> String processWebCrawling(@RequestParam String url, @RequestParam int maxDepth, @RequestParam int urlCrawled) {
@@ -30,5 +35,11 @@ public class ElasticSearchController {
     public List<WebPage> getWebCrawlerDocument(@RequestParam String filter) {
         return webCrawlerService.getWebCrawlerDocumentBySearchParam(filter);
     }
+
+    @GetMapping("/failureDetails")
+    public List<ExceptionRecord> getFailing() {
+        return exceptionLoggingService.getFailedSites();
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package com.webcrawling.entity;
+import com.webcrawling.entity.deserializer.CustomZonedDateTimeConverter;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.*;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.time.LocalDateTime;
@@ -16,8 +18,16 @@ public class ExceptionRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    @Field
     private String className;
+
+    @Field
     private String methodName;
+
+    @Field
     private String exceptionMessage;
+
+    @Field(type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSS")
+    @ValueConverter(CustomZonedDateTimeConverter.class)
     private LocalDateTime timestamp;
 }
