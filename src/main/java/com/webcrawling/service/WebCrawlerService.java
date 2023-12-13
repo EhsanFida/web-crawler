@@ -10,4 +10,5 @@ public interface WebCrawlerService {
     public List<WebPage> getWebCrawlerDocumentBySearchParam(String filter);
 
     public List<WebPage> getWebCrawlerDocuments();
+    public List<String> getDescriptionFromDocument(String findString);
 }

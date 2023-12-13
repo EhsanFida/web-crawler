@@ -6,13 +6,23 @@ import com.webcrawling.repo.ExceptionRecordRepository;
 import com.webcrawling.repo.WebPageRepository;
 import com.webcrawling.service.WebCrawlerService;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.elasticsearch.core.SearchHit;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,6 +36,8 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
     WebPageRepository webPageRepository;
     @Autowired
     private ExceptionRecordRepository exceptionRecordRepository;
+    @Autowired
+    ElasticsearchOperations elasticsearchOperations;
 
     public void crawlWebsite(String startingUrl, int maxDepth, int maxDocuments) {
         log.info("Web Crawling over given URL has been started {} ", startingUrl);
@@ -83,5 +95,27 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
         return StreamSupport.stream(webPageRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+    public List<String> getDescriptionFromDocument(String findString){
+        QueryBuilder queryBuilder = QueryBuilders
+                .wildcardQuery("description", findString+"*");
 
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withFilter(queryBuilder)
+                .withPageable(PageRequest.of(0, 7))
+                .build();
+
+        SearchHits<WebPage> searchSuggestions =
+                elasticsearchOperations.search(searchQuery,
+                        WebPage.class,
+                        IndexCoordinates.of("web_page"));
+
+        List<String> suggestions = new ArrayList<String>();
+
+        searchSuggestions.getSearchHits().forEach(searchHit->{
+            suggestions.add(searchHit.getContent().getDescription());
+        });
+        return suggestions;
+    }
 }
+
+

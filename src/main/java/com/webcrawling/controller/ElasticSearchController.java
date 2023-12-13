@@ -36,7 +36,10 @@ public class ElasticSearchController {
     public List<WebPage> getWebCrawlerDocument(@RequestParam String filter) {
         return webCrawlerService.getWebCrawlerDocumentBySearchParam(filter);
     }
-
+    @GetMapping("/find")
+    public List<String> getDescriptionFromDocument(@RequestParam String findString) {
+        return webCrawlerService.getDescriptionFromDocument(findString);
+    }
     @GetMapping("/failureDetails")
     public List<ExceptionRecord> getFailing() throws IOException {
         return exceptionLoggingService.getFailedSites();
